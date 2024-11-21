@@ -1,13 +1,14 @@
-package handlers
+package todo
 
 import (
 	"encoding/json"
 	"net/http"
+	"todo-api/data"
 	"todo-api/models"
 )
 
-var todos []models.Todo
-var nextID = 1
+// todos := data.Todos
+// var nextID = 3
 
 func CreateTodoHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method != http.MethodPost {
@@ -21,9 +22,10 @@ func CreateTodoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	nextID := len(data.Todos) + 1
 	todo.ID = nextID
-	nextID++
-	todos = append(todos, todo)
+
+	data.Todos = append(data.Todos, todo)
 
 	w.WriteHeader(http.StatusCreated)
 	json.NewEncoder(w).Encode(todo)

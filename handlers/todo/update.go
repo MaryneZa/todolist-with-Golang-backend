@@ -1,9 +1,10 @@
-package handlers
+package todo
 
 import (
 	"encoding/json"
 	"net/http"
 	"todo-api/models"
+	"todo-api/data"
 )
 
 func UpdateTodoHandler(w http.ResponseWriter, r *http.Request) {
@@ -18,9 +19,9 @@ func UpdateTodoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i, todo := range todos {
+	for i, todo := range data.Todos {
 		if todo.ID == updatedTodo.ID {
-			todos[i] = updatedTodo
+			data.Todos[i] = updatedTodo
 			json.NewEncoder(w).Encode(updatedTodo)
 			return
 		}

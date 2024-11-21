@@ -1,8 +1,9 @@
-package handlers
+package todo
 
 import (
 	"encoding/json"
 	"net/http"
+	"todo-api/data"
 )
 
 func DeleteTodoHandler(w http.ResponseWriter, r *http.Request) {
@@ -19,9 +20,9 @@ func DeleteTodoHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	for i, todo := range todos {
+	for i, todo := range data.Todos {
 		if todo.ID == deleteRequest.ID {
-			todos = append(todos[:i], todos[i+1:]...)
+			data.Todos = append(data.Todos[:i], data.Todos[i+1:]...)
 			// w.WriteHeader(http.StatusNoContent)
 		
 			response := map[string]string{
