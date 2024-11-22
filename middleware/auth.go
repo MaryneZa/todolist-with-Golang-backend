@@ -3,22 +3,24 @@ package middleware
 import (
     "net/http"
     "todo-api/utils"
+	"fmt"
 )
 
-func AuthMiddleware(next http.HandlerFunc) http.HandlerFunc {
-    return func(w http.ResponseWriter, r *http.Request) {
+func AuthMiddleware(next http.Handler) http.Handler {
+    return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
         token := r.Header.Get("Authorization")
         if token == "" {
             http.Error(w, "Unauthorized", http.StatusUnauthorized)
             return
         }
 
-        _, err := utils.VerifyJWT(token)
+        userID, err := utils.VerifyJWT(token[7:]) // Strip "Bearer " prefix
         if err != nil {
-            http.Error(w, "Unauthorized", http.StatusUnauthorized)
+            http.Error(w, "Unauthorized: "+err.Error(), http.StatusUnauthorized)
             return
         }
 
-        next(w, r)
-    }
+        fmt.Printf("Authenticated User ID: %d\n", userID)
+        next.ServeHTTP(w, r)
+    })
 }
