@@ -1,8 +1,11 @@
 package user
 
 import (
-	// "encoding/json"
+	"database/sql"
+	"encoding/json"
 	"net/http"
+	"todo-api/internal/types"
+	"todo-api/internal/utils"
 )
 
 func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
@@ -11,5 +14,21 @@ func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	// json.NewEncoder(w).Encode(data.Users)
+	// Fetch users from the database
+	db := utils.GetDB()
+	var users []types.User
+	query := `SELECT id, username, email FROM users`
+	err := db.Select(&users, query)
+	if err != nil {
+		if err == sql.ErrNoRows {
+			http.Error(w, "No users found", http.StatusNotFound)
+		} else {
+			http.Error(w, "Error fetching users", http.StatusInternalServerError)
+		}
+		return
+	}
+
+	// Respond with the list of users
+	w.Header().Set("Content-Type", "application/json")
+	json.NewEncoder(w).Encode(users)
 }

@@ -7,7 +7,11 @@ import (
     "todo-api/internal/types"
     "database/sql"
     "github.com/go-sql-driver/mysql"
+	"github.com/go-playground/validator/v10"
+
 )
+
+var validate = validator.New()
 
 func SignupHandler(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodPost {
@@ -21,6 +25,12 @@ func SignupHandler(w http.ResponseWriter, r *http.Request) {
         http.Error(w, "Invalid input", http.StatusBadRequest)
         return
     }
+
+    // Validate the input struct
+	if err := validate.Struct(input); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
     // Hash the password
     hashedPassword, err := utils.HashPassword(input.Password)
@@ -61,6 +71,12 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
         http.Error(w, "Invalid input", http.StatusBadRequest)
         return
     }
+
+    // Validate the input struct
+	if err := validate.Struct(credentials); err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 
     // Fetch the user from the database
     db := utils.GetDB()

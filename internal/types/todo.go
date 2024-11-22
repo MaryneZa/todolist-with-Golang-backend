@@ -15,3 +15,15 @@ type CreateTodoInput struct {
     UserID      int    `json:"user_id" validate:"required"`      // Required
 }
 
+type DeleteRequest struct {
+    ID int `json:"id"`
+}
+
+type UpdateTodo struct {
+    ID        int    `db:"id" json:"id" validate:"required"`
+    Title     string `db:"title" json:"title" validate:"required"`
+    Description string `db:"description" json:"description" validate:"required"`
+    Completed bool   `db:"completed" json:"completed" validate:"required"`
+    UserID    int    `db:"user_id" json:"user_id" validate:"required"`
+}
+
