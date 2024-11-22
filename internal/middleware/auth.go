@@ -2,7 +2,7 @@ package middleware
 
 import (
     "net/http"
-    "todo-api/utils"
+    "todo-api/internal/utils"
 	"fmt"
 )
 

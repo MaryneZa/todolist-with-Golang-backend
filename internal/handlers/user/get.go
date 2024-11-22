@@ -1,9 +1,8 @@
 package user
 
 import (
-	"encoding/json"
+	// "encoding/json"
 	"net/http"
-	"todo-api/data"
 )
 
 func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
@@ -12,5 +11,5 @@ func GetUsersHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(data.Users)
+	// json.NewEncoder(w).Encode(data.Users)
 }

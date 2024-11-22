@@ -3,7 +3,6 @@ package todo
 import (
 	"encoding/json"
 	"net/http"
-	"todo-api/data"
 )
 
 func GetTodosHandler(w http.ResponseWriter, r *http.Request) {
@@ -12,5 +11,5 @@ func GetTodosHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	json.NewEncoder(w).Encode(data.Todos)
+	json.NewEncoder(w).Encode("string")
 }

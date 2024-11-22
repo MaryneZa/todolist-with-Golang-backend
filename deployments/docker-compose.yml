@@ -1,0 +1,36 @@
+version: "3.9"
+services:
+  db:
+    image: mysql:8.0
+    container_name: todo_db
+    restart: always
+    ports:
+      - "6950:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword
+      MYSQL_DATABASE: todo_app
+      MYSQL_USER: maryne
+      MYSQL_PASSWORD: todopassword
+    volumes:
+      - db_data:/var/lib/mysql
+
+
+volumes:
+  db_data:
+
+  # app:
+  #   build:
+  #     context: .
+  #   container_name: todo_app
+  #   restart: always
+  #   ports:
+  #     - "6951:8080"
+  #   environment:
+  #     DB_HOST: db
+  #     DB_PORT: 3306
+  #     DB_USER: maryne
+  #     DB_PASSWORD: todopassword
+  #     DB_NAME: todo_app
+  #     JWT_SECRET: maryne_jwt
+  #   depends_on:
+  #     - db

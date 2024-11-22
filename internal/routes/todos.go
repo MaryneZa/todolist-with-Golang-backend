@@ -3,8 +3,8 @@ package routes
 import (
     "net/http"
     "github.com/go-chi/chi/v5"
-    "todo-api/middleware"
-    "todo-api/handlers/todo"
+    "todo-api/internal/middleware"
+    "todo-api/internal/handlers/todo"
 )
 
 func TodosRoutes() http.Handler {
