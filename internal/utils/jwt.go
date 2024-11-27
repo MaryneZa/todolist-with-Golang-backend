@@ -13,7 +13,7 @@ func getAccessTokenSecretKey() (string, error) {
     if err := godotenv.Load(); err != nil {
         return "", errors.New("failed to load .env file")
     }
-    secret := os.Getenv("JWT_SECRET")
+    secret := os.Getenv("JWT_ACCESS_TOKEN_SECRET")
     if secret == "" {
         return "", errors.New("JWT_SECRET is not set in .env file")
     }
@@ -24,12 +24,14 @@ func getRefreshTokenSecretKey() (string, error) {
     if err := godotenv.Load(); err != nil {
         return "", errors.New("failed to load .env file")
     }
-    secret := os.Getenv("JWT_SECRET")
+    secret := os.Getenv("JWT_REFRESH_TOKEN_SECRET")
     if secret == "" {
         return "", errors.New("JWT_SECRET is not set in .env file")
     }
     return secret, nil
 }
+
+
 
 
 

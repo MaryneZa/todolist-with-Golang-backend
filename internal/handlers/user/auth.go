@@ -9,6 +9,7 @@ import (
     "github.com/go-sql-driver/mysql"
 	"github.com/go-playground/validator/v10"
     "time"
+    "log"
 )
 
 var validate = validator.New()
@@ -157,16 +158,20 @@ func RefreshTokenHandler(w http.ResponseWriter, r *http.Request) {
         return
     }
     refreshToken := cookie.Value
+    log.Println(refreshToken)
 
     // Validate refresh token
     db := utils.GetDB()
+
     var tokenData struct {
-        UserID    int
-        ExpiresAt time.Time
+        UserID    int       `db:"user_id"`    // Maps the "user_id" column
+        ExpiresAt time.Time `db:"expires_at"` // Maps the "expires_at" column
     }
 
     query := `SELECT user_id, expires_at FROM refresh_tokens WHERE token = ?`
     err = db.Get(&tokenData, query, refreshToken)
+    log.Println(err)
+    log.Println(tokenData)
     if err != nil {
         if err == sql.ErrNoRows {
             http.Error(w, "Invalid refresh token", http.StatusUnauthorized)

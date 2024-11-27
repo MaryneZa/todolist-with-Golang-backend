@@ -12,6 +12,7 @@ func UsersRoutes() http.Handler {
 
     r.Post("/sign-up", user.SignupHandler)
     r.Post("/login", user.LoginHandler)
+    r.Post("/get-access", user.RefreshTokenHandler)
     r.With(middleware.AuthMiddleware).Get("/users", user.GetUsersHandler)
 
     return r

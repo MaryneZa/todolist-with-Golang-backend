@@ -18,7 +18,7 @@ var (
 
 func GetDB() *sqlx.DB {
     once.Do(func() {
-        dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s",
+        dsn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true",
             os.Getenv("DB_USER"),
             os.Getenv("DB_PASSWORD"),
             os.Getenv("DB_HOST"),
