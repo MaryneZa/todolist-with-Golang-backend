@@ -8,19 +8,19 @@ type User struct {
 }
 
 type UserSignUp struct {
-    Username string `json:"username" validate:"required"`
-    Email    string `json:"email" validate:"required"`
-    Password string `json:"password" validate:"required"`
+    Username string `json:"username" validate:"required,min=3,max=50"`
+    Email    string `json:"email" validate:"required,email"`
+    Password string `json:"password" validate:"required,min=8"`
 }
 
-type UserLoginResponse struct {
-    ID       int    `json:"id"`
-    Username string `json:"username"`
-    Email    string `json:"email"`
-    Token    string `json:"token"`
-}
+// type UserLoginResponse struct {
+//     ID       int    `json:"id"`
+//     Username string `json:"username"`
+//     Email    string `json:"email"`
+//     Token    string `json:"token"`
+// }
 
 type UserLoginInput struct {
-    Email    string `json:"email"`
-    Password string `json:"password"`
+    Email    string `json:"email" validate:"required,email"`
+    Password string `json:"password" validate:"required"`
 }

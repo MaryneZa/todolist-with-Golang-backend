@@ -14,7 +14,7 @@ func AuthMiddleware(next http.Handler) http.Handler {
             return
         }
 
-        userID, err := utils.VerifyJWT(token[7:]) // Strip "Bearer " prefix
+        userID, err := utils.VerifyToken(token[7:], "access") // Strip "Bearer " prefix
         if err != nil {
             http.Error(w, "Unauthorized: "+err.Error(), http.StatusUnauthorized)
             return

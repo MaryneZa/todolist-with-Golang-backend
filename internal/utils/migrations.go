@@ -23,6 +23,15 @@ func RunMigrations() {
 			user_id INT,
 			FOREIGN KEY (user_id) REFERENCES users(id)
 		);`,
+		`CREATE TABLE IF NOT EXISTS refresh_tokens (
+			id INT AUTO_INCREMENT PRIMARY KEY,
+			user_id INT NOT NULL,
+			token VARCHAR(255) NOT NULL UNIQUE,
+			expires_at DATETIME NOT NULL,
+			device_info VARCHAR(255),  -- Optional: Device/browser details
+			created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
+			FOREIGN KEY (user_id) REFERENCES users(id)
+		);`,
 	}
 
 	for _, query := range queries {
