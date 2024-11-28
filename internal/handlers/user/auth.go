@@ -145,6 +145,54 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
     })
 }
 
+func LogoutHandler(w http.ResponseWriter, r *http.Request) {
+    if r.Method != http.MethodPost {
+        http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
+        return
+    }
+
+    cookie, err := r.Cookie("refresh_token")
+    if err != nil {
+        http.Error(w, "Refresh token not provided", http.StatusUnauthorized)
+        return
+    }
+
+    refreshToken := cookie.Value
+
+    db := utils.GetDB()
+    query := `DELETE FROM refresh_tokens WHERE token = ?`
+    _, err = db.Exec(query, refreshToken)
+    if err != nil {
+        http.Error(w, "Error logging out", http.StatusInternalServerError)
+        return
+    }
+
+    // Clear cookies
+    http.SetCookie(w, &http.Cookie{
+        Name:     "access_token",
+        Value:    "",
+        HttpOnly: true,
+        Secure:   true,
+        SameSite: http.SameSiteStrictMode,
+        Expires:  time.Unix(0, 0), // Expire immediately
+    })
+
+    http.SetCookie(w, &http.Cookie{
+        Name:     "refresh_token",
+        Value:    "",
+        HttpOnly: true,
+        Secure:   true,
+        SameSite: http.SameSiteStrictMode,
+        Expires:  time.Unix(0, 0), // Expire immediately
+    })
+
+    w.WriteHeader(http.StatusOK)
+    json.NewEncoder(w).Encode(map[string]string{
+        "message": "Successfully logged out",
+    })
+}
+
+
 func RefreshTokenHandler(w http.ResponseWriter, r *http.Request) {
     if r.Method != http.MethodPost {
         http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
